@@ -15,13 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "Category", uniqueConstraints={@UniqueConstraint(columnNames={"category"})})
+//@Table(name = "Category", uniqueConstraints={@UniqueConstraint(columnNames={"category"})})
+@Table(name = "Category")
 public class Category {
     @Id
     @GeneratedValue
     private Integer id;
     
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String category;
     
     @OneToMany(mappedBy="category")

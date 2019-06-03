@@ -2,7 +2,7 @@ package org.sideproject.simplestore.service;
 
 import org.springframework.data.repository.CrudRepository;
 
-public class GenericOperation<T> implements Operation{
+public class GenericOperation<T> implements Command{
 	
 	private CrudRepository<T, Integer> repository;
 	

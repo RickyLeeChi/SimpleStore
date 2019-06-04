@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreateListingCommand extends Operation{
+public class DeleteListingCommand extends Operation{
 	
 	@Autowired
 	private ListingRepository listingRepository;
@@ -27,7 +27,7 @@ public class CreateListingCommand extends Operation{
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	public CreateListingCommand() {
+	public DeleteListingCommand() {
 		super();
 	}
 

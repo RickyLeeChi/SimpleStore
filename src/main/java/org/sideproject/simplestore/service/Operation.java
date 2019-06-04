@@ -1,10 +1,21 @@
 package org.sideproject.simplestore.service;
 
+import java.util.List;
+
 public abstract class Operation implements Command{
 	int errorCode;
 	String errorMeassge;
+	private List<String> args;
 	
 	abstract void doAction();
+	
+	public List<String> getArgs() {
+		return args;
+	}
+
+	public void setArgs(List<String> args) {
+		this.args = args;
+	}
 	
 	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;

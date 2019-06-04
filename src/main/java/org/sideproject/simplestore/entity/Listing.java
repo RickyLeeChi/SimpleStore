@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class Listing {
 	@Column
 	private LocalDate creationTime;
 	
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "category_id")
 	private Category category;
 	
@@ -143,6 +144,11 @@ public class Listing {
 		
 		public ListingBuilder setCategory(Category category) {
 			this.listing.setCategory(category);
+			return this;
+		}
+		
+		public ListingBuilder setUser(User user) {
+			this.listing.setUser(user);
 			return this;
 		}
 		

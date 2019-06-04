@@ -3,6 +3,9 @@ package org.sideproject.simplestore.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sideproject.simplestore.entity.User;
+import org.sideproject.simplestore.entity.User.UserBuilder;
+
 public class StringPaser {
 	
 	public static final String SPACE = " ";

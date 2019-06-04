@@ -6,15 +6,13 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CommandManager {
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	Map<String, Operation> commandMap = new HashMap<String, Operation>();
-	
-//	public void register(String commandName, Operation op) {
-//		this.commandMap.put(commandName, op);
-//	}
 	
 	public void register(UserOP userOp, Operation op) {		
 		this.commandMap.put(userOp.getOpkeyword(), op);
@@ -30,6 +28,8 @@ public class CommandManager {
         if (op == null) {
         	logger.info("Command [{}] does NOT support", commands.get(0));
         }
+        
+        op.setArgs(commands);
         
         op.execute();
 	}

@@ -9,7 +9,7 @@ public enum UserOP {
 	//LISTING
 	CREATELIST("CREATE_LISTING"),
 	GETLIST,
-	DELETELIST;
+	DELETELIST("DELETE_LISTING");
 	
 	private String opKeyword;
 	

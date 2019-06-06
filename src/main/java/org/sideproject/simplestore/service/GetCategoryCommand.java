@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeleteListingCommand extends Operation{
+public class GetCategoryCommand extends Operation{
 	
 	@Autowired
 	private ListingRepository listingRepository;
@@ -24,7 +24,7 @@ public class DeleteListingCommand extends Operation{
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	public DeleteListingCommand() {
+	public GetCategoryCommand() {
 		super();
 	}
 
@@ -40,5 +40,24 @@ public class DeleteListingCommand extends Operation{
 		Listing l = lists.get();
 		
 		Category c = l.getCategory();
+		
+		c.getListings().remove(l);
+		
+		if(c.getListings().isEmpty()) {
+			categoryRepository.delete(c);
+		}
+		
+		else {
+			categoryRepository.save(c);
+		}
+//		
+//		lists.get().getCategory().getListings().remove(l);
+		
+//		Optional<Listing> lists = listingRepository.findByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
+//		Listing l = lists.get();
+//		
+//		listingRepository.delete(l);
+		
+//		listingRepository.deleteByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
 	}
 }

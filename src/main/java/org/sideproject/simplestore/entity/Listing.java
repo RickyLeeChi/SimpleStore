@@ -37,12 +37,12 @@ public class Listing {
 	@Column
 	private LocalDate creationTime;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Category_id")
 	private Category category;
 	
 	@ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "User_id")
 	private User user;
 	
 	public Integer getId() {

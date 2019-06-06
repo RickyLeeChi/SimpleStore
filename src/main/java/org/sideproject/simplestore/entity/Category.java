@@ -26,7 +26,7 @@ public class Category {
     @Column(nullable = false)
     private String category;
     
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="category")
+    @OneToMany(mappedBy="category", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Listing> listings;
     
     public Integer getId() {

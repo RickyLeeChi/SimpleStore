@@ -1,6 +1,7 @@
 package org.sideproject.simplestore.entity;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Listing")
@@ -35,7 +38,8 @@ public class Listing {
 	private String userName;
 
 	@Column
-	private LocalDate creationTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date creationTime;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Category_id")
@@ -85,11 +89,11 @@ public class Listing {
 		this.userName = userName;
 	}
 
-	public LocalDate getCreationTime() {
+	public Date getCreationTime() {
 		return creationTime;
 	}
 
-	public void setCreationTime(LocalDate creationTime) {
+	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
 	}
 
@@ -137,7 +141,7 @@ public class Listing {
 			return this;
 		}
 		
-		public ListingBuilder setCreationTime(LocalDate creationTime) {
+		public ListingBuilder setCreationTime(Date creationTime) {
 			this.listing.setCreationTime(creationTime);
 			return this;
 		}

@@ -1,5 +1,7 @@
 package org.sideproject.simplestore.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,7 +85,7 @@ public class CreateListingCommand extends Operation{
 	
 	private Listing getListingByArgs(User user, Category category) {
 		List<String> args = getArgs();
-
+		
 		Listing list = new ListingBuilder()
 				   .setUserName(args.get(1))
 				   .setTitle(args.get(2))
@@ -91,6 +93,7 @@ public class CreateListingCommand extends Operation{
 				   .setPrice(Double.parseDouble(args.get(4)))
 				   .setCategory(category)
 				   .setUser(user)
+				   .setCreationTime(new Date())
 				   .build();
 				
 		return list;

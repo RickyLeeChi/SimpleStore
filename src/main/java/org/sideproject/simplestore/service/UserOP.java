@@ -3,8 +3,6 @@ package org.sideproject.simplestore.service;
 public enum UserOP {
 	//USER
 	CREATEUSER("REGISTER"),
-	UPDATEUSER,
-	DELETEUSER,
 	
 	//LISTING
 	CREATELIST("CREATE_LISTING"),
@@ -12,7 +10,8 @@ public enum UserOP {
 	DELETELIST("DELETE_LISTING"),
 	
 	//CATEGORY
-	GETCATEGORY("GET_CATEGORY");
+	GETCATEGORY("GET_CATEGORY"),
+	GETTOPCATEGORY("GET_TOP_CATEGORY");
 	
 	private String opKeyword;
 	

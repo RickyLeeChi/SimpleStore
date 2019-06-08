@@ -16,6 +16,23 @@ public interface ListingRepository extends JpaRepository<Listing, Integer>{
 	
 	Optional<Listing> findByIdAndUserName(Integer id, String userName);
 	
-	@Query("Select * from A a  left join B b on a.id=b.id")
-	public Optional<Listing> findAllWithDescriptionQuery(@Param("userName") String userName, @Param("category") String category);
+//	@Query("Select a "
+//			+ "From Listing a")
+//	@Query("Select a "
+//			+ "From Listing a "
+//			+ "Left Join ( "
+//			+ "Select category, id "
+//			+ "From Category where category = :category "
+//			+ ") b on a.Category_id = b.id "
+//			+ "Where a.userName = :userName ")
+	
+//	@Query(value = "Select a "
+//			+ "From Listing a "
+//			+ "where a.Category_id = "
+//			+ "( "
+//			+ "Select id from Category "
+//			+ "Where category = :category "
+//			+ ") "
+//			+ "And a.userName = :userName")
+//	Optional<Listing> findAllListingByUserNameAndCategoryQuery(@Param("userName") String userName, @Param("category") String category);
 }

@@ -7,6 +7,8 @@ import java.util.Scanner;
 import org.sideproject.simplestore.service.CommandManager;
 import org.sideproject.simplestore.service.CreateListingCommand;
 import org.sideproject.simplestore.service.DeleteListingCommand;
+import org.sideproject.simplestore.service.GetCategoryCommand;
+import org.sideproject.simplestore.service.GetListingCommand;
 import org.sideproject.simplestore.service.RegisterUserCommand;
 import org.sideproject.simplestore.service.UserOP;
 import org.sideproject.simplestore.util.StringPaser;
@@ -65,5 +67,7 @@ public class Application
 		commandManager.register(UserOP.CREATEUSER, applicationContext.getBean(RegisterUserCommand.class));
 		commandManager.register(UserOP.CREATELIST, applicationContext.getBean(CreateListingCommand.class));
 		commandManager.register(UserOP.DELETELIST, applicationContext.getBean(DeleteListingCommand.class));
+		commandManager.register(UserOP.GETLIST, applicationContext.getBean(GetListingCommand.class));
+		commandManager.register(UserOP.GETCATEGORY, applicationContext.getBean(GetCategoryCommand.class));
 	}
 }

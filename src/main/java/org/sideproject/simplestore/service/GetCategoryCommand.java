@@ -13,13 +13,14 @@ import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GetCategoryCommand extends Operation{
 	
-	@Autowired
-	private ListingRepository listingRepository;
+//	@Autowired
+//	private ListingRepository listingRepository;
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -30,34 +31,62 @@ public class GetCategoryCommand extends Operation{
 
 	@Override
 	void doAction() {
+//		String sortField = GetCategoryCommandOP.valueOf(getArgs().get(3)).geOPValue();
+//		String order = GetCategoryCommandOP.valueOf(getArgs().get(4)).geOPValue();
+		Sort sort = getSort(getArgs().get(3), getArgs().get(4));
+//		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getArgs().get(1), getArgs().get(2), Sort.by("price").ascending());
+		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getArgs().get(1), getArgs().get(2), sort);
 		
-		Optional<Listing> lists = listingRepository.findById(Integer.parseInt(getArgs().get(2)));
-		
-		if(!lists.isPresent()) {
+		if(lists.isEmpty()) {
 			return;
 		}
 		
-		Listing l = lists.get();
+		for(Listing l : lists) {
+			l.getCategory();
+		}
+	}
+	
+	public Sort getSort(String sortColumn, String orderMethod) {
+		String column = GetCategoryCommandOP_SortColumn.valueOf(sortColumn).getSortColumn();
 		
-		Category c = l.getCategory();
+		Sort sort = Sort.by(column);
 		
-		c.getListings().remove(l);
+		if(orderMethod.equalsIgnoreCase(GetCategoryCommandOP_OrderMethod.asc.getOrderMethod())) {
+			sort = sort.ascending();
+		}
+		else if(orderMethod.equalsIgnoreCase(GetCategoryCommandOP_OrderMethod.dsc.getOrderMethod())) {
+			sort = sort.descending();
+		}
+		return sort;
+	}
+	
+	private enum GetCategoryCommandOP_SortColumn{
+		sort_time("list.creationTime"),
+		sort_price("list.price");
+	
+		private String sortColumn;
 		
-		if(c.getListings().isEmpty()) {
-			categoryRepository.delete(c);
+		private	GetCategoryCommandOP_SortColumn(String sortColumn) {
+			this.sortColumn = sortColumn;
 		}
 		
-		else {
-			categoryRepository.save(c);
+		public String getSortColumn() {
+			return this.sortColumn;
 		}
-//		
-//		lists.get().getCategory().getListings().remove(l);
+	}
+	
+	private enum GetCategoryCommandOP_OrderMethod{
+		asc("ASC"),
+		dsc("DSC");
+	
+		private String orderMethod;
 		
-//		Optional<Listing> lists = listingRepository.findByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
-//		Listing l = lists.get();
-//		
-//		listingRepository.delete(l);
+		private	GetCategoryCommandOP_OrderMethod(String orderMethod) {
+			this.orderMethod = orderMethod;
+		}
 		
-//		listingRepository.deleteByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
+		public String getOrderMethod() {
+			return this.orderMethod;
+		}
 	}
 }

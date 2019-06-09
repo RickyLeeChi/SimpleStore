@@ -30,7 +30,6 @@ public class DeleteListingCommand extends Operation{
 
 	@Override
 	void doAction() {
-		
 		Optional<Listing> lists = listingRepository.findById(Integer.parseInt(getArgs().get(2)));
 		
 		if(!lists.isPresent()) {
@@ -40,5 +39,15 @@ public class DeleteListingCommand extends Operation{
 		Listing l = lists.get();
 		
 		Category c = l.getCategory();
+		
+		c.getListings().remove(l);
+		
+		if(c.getListings().isEmpty()) {
+			categoryRepository.delete(c);
+		}
+		
+		else {
+			categoryRepository.save(c);
+		}
 	}
 }

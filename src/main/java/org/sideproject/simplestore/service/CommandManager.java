@@ -27,6 +27,7 @@ public class CommandManager {
 		
         if (op == null) {
         	logger.info("Command [{}] does NOT support", commands.get(0));
+        	return;
         }
         
         op.setArgs(commands);

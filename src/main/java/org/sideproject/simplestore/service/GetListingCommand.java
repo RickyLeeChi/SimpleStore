@@ -21,8 +21,8 @@ public class GetListingCommand extends Operation{
 	@Autowired
 	private ListingRepository listingRepository;
 	
-	@Autowired
-	private CategoryRepository categoryRepository;
+//	@Autowired
+//	private CategoryRepository categoryRepository;
 	
 	public GetListingCommand() {
 		super();
@@ -41,15 +41,6 @@ public class GetListingCommand extends Operation{
 		
 		Category c = l.getCategory();
 		
-		c.getListings().remove(l);
-		
-		if(c.getListings().isEmpty()) {
-			categoryRepository.delete(c);
-		}
-		
-		else {
-			categoryRepository.save(c);
-		}
 //		
 //		lists.get().getCategory().getListings().remove(l);
 		

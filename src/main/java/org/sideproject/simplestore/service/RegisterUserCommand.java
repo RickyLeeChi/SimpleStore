@@ -10,8 +10,10 @@ import org.sideproject.simplestore.util.StringPaser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("RegisterUserCommand")
 public class RegisterUserCommand extends Operation{
+	
+	private static RegisterUserCommand commmand = null; 
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -44,4 +46,13 @@ public class RegisterUserCommand extends Operation{
 				
 		return user;
 	}
+	
+    public static RegisterUserCommand getInstance() 
+    { 
+        if (commmand == null) {
+        	commmand = new RegisterUserCommand(); 
+        }
+  
+        return commmand; 
+    }
 }

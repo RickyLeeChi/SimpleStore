@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("GetCategoryCommand")
 public class GetCategoryCommand extends Operation{
 	
 //	@Autowired
@@ -60,7 +60,7 @@ public class GetCategoryCommand extends Operation{
 		return sort;
 	}
 	
-	private enum GetCategoryCommandOP_SortColumn{
+	private enum GetCategoryCommandOP_SortColumn {
 		sort_time("list.creationTime"),
 		sort_price("list.price");
 	
@@ -75,7 +75,7 @@ public class GetCategoryCommand extends Operation{
 		}
 	}
 	
-	private enum GetCategoryCommandOP_OrderMethod{
+	private enum GetCategoryCommandOP_OrderMethod {
 		asc("ASC"),
 		dsc("DSC");
 	
@@ -89,4 +89,12 @@ public class GetCategoryCommand extends Operation{
 			return this.orderMethod;
 		}
 	}
+	
+//	public class SortFactory {
+//		public Sort getSort(String sort_item, String orderMethod) {
+//			String column = GetCategoryCommandOP_SortColumn.valueOf(sort_item).getSortColumn();
+//			
+//			
+//		}
+//	}
 }

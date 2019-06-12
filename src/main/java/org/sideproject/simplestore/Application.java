@@ -24,7 +24,7 @@ public class Application
 	@Autowired
 	CommandManager commandManager;
 	
-	private static AnnotationConfigApplicationContext applicationContext;
+	public static AnnotationConfigApplicationContext applicationContext;
 	
     public static void main( String[] args )
     {
@@ -39,7 +39,7 @@ public class Application
     
     public void run() {
     	//register all support command
-    	register();
+//    	register();
     	
     	Scanner command = new Scanner(System.in);
     	
@@ -63,11 +63,11 @@ public class Application
         
     }
 
-	private void register() {
-		commandManager.register(UserOP.CREATEUSER, applicationContext.getBean(RegisterUserCommand.class));
-		commandManager.register(UserOP.CREATELIST, applicationContext.getBean(CreateListingCommand.class));
-		commandManager.register(UserOP.DELETELIST, applicationContext.getBean(DeleteListingCommand.class));
-		commandManager.register(UserOP.GETLIST, applicationContext.getBean(GetListingCommand.class));
-		commandManager.register(UserOP.GETCATEGORY, applicationContext.getBean(GetCategoryCommand.class));
-	}
+//	private void register() {
+//		commandManager.register(UserOP.CREATEUSER, applicationContext.getBean(RegisterUserCommand.class));
+//		commandManager.register(UserOP.CREATELIST, applicationContext.getBean(CreateListingCommand.class));
+//		commandManager.register(UserOP.DELETELIST, applicationContext.getBean(DeleteListingCommand.class));
+//		commandManager.register(UserOP.GETLIST, applicationContext.getBean(GetListingCommand.class));
+//		commandManager.register(UserOP.GETCATEGORY, applicationContext.getBean(GetCategoryCommand.class));
+//	}
 }

@@ -1,11 +1,6 @@
 package org.sideproject.simplestore.service;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,53 +11,31 @@ import org.springframework.stereotype.Service;
 public class CommandManager {
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
-	Map<String, Operation> commandMap = new HashMap<String, Operation>();
-	
-	public void register(UserOP userOp, Operation op) {		
-		this.commandMap.put(userOp.getOpkeyword(), op);
-	}
-	
-	public void execute(List<String> commands) {
+	public String execute(List<String> commands) {
 		if(commands.isEmpty()) {
-			return;
+			return "Unsuppport opreation";
 		}
 
-		String className = getCommandClassName(commands.get(0));
+		String serviceName = getCommandClassName(commands.get(0));
 		
-		//
-//		Operation op = null;
-//		
-//		try {
-//			Class<Operation> clazz = (Class<Operation>) Class.forName(className);
-//			
-//			Method method = clazz.getMethod("getInstance");
-//			op = (Operation) method.invoke(clazz);
-//			
-//		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		//
+		Operation operation = (Operation) Application.applicationContext.getBean(serviceName);
 		
-//		Operation op = commandMap.get(commands.get(0));
-		
-//		Operation op = (Operation) Application.applicationContext.getBean(RegisterUserCommand.class);
-		Operation op = (Operation) Application.applicationContext.getBean(className);
-		
-        if (op == null) {
+        if (operation == null) {
         	logger.info("Command [{}] does NOT support", commands.get(0));
-        	return;
+        	return "Command " + commands.get(0) + " does NOT support";
         }
         
-        op.setArgs(commands);
+        operation.setArgs(commands);
         
-        op.execute();
+        String message = operation.execute();
+        
+        return message;
 	}
 
 	private String getCommandClassName(String command) {
-		UserOP2[] ops = UserOP2.values();
+		UserOP[] ops = UserOP.values();
 		
-		for(UserOP2 op : ops) {
+		for(UserOP op : ops) {
 			if(op.getOpkeyword().equalsIgnoreCase(command)) {
 				return op.getClassName();
 			}

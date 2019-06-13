@@ -6,15 +6,11 @@ import java.util.Optional;
 import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.entity.User.UserBuilder;
 import org.sideproject.simplestore.repository.UserRepository;
-import org.sideproject.simplestore.util.StringPaser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("RegisterUserCommand")
 public class RegisterUserCommand extends Operation{
-	
-	private static RegisterUserCommand commmand = null; 
-	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -23,16 +19,18 @@ public class RegisterUserCommand extends Operation{
 	}
 	
 	@Override
-	void doAction() {
+	void doAction() {		
 		User user = getUserByArgs();
 			
-		Optional<User> users = userRepository.findByUserName(user.getUserName());
+		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(users.isPresent()) {
+			setReturnMeasge("Error - user already existing");
 			return;
 		}
 		
 		userRepository.save(user);
+		setReturnMeasge("Success");		
 	}
 	
 	private User getUserByArgs() {
@@ -46,13 +44,4 @@ public class RegisterUserCommand extends Operation{
 				
 		return user;
 	}
-	
-    public static RegisterUserCommand getInstance() 
-    { 
-        if (commmand == null) {
-        	commmand = new RegisterUserCommand(); 
-        }
-  
-        return commmand; 
-    }
 }

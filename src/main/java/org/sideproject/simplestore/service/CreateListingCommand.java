@@ -1,6 +1,5 @@
 package org.sideproject.simplestore.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,9 +36,10 @@ public class CreateListingCommand extends Operation{
 	void doAction() {
 		User user = getUserByArgs();
 		
-		Optional<User> users = userRepository.findByUserName(user.getUserName());
+		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(!users.isPresent()) {
+			setReturnMeasge("Error - unknown user");
 			return;
 		}
 		
@@ -58,7 +58,9 @@ public class CreateListingCommand extends Operation{
 		
 		Listing list = getListingByArgs(user, category);
 		
-		listingRepository.save(list);
+		Listing returnList = listingRepository.save(list);
+		
+		setReturnMeasge(String.valueOf(returnList.getId()));
 	}
 	
 	private User getUserByArgs() {

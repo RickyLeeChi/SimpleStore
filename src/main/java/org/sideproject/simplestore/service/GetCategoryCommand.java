@@ -18,9 +18,8 @@ import org.springframework.stereotype.Service;
 
 @Service("GetCategoryCommand")
 public class GetCategoryCommand extends Operation{
-	
-//	@Autowired
-//	private ListingRepository listingRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -31,19 +30,28 @@ public class GetCategoryCommand extends Operation{
 
 	@Override
 	void doAction() {
-//		String sortField = GetCategoryCommandOP.valueOf(getArgs().get(3)).geOPValue();
-//		String order = GetCategoryCommandOP.valueOf(getArgs().get(4)).geOPValue();
-		Sort sort = getSort(getArgs().get(3), getArgs().get(4));
-//		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getArgs().get(1), getArgs().get(2), Sort.by("price").ascending());
-		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getArgs().get(1), getArgs().get(2), sort);
+		Optional<User> users = userRepository.findByUserNameIgnoreCase(getArgs().get(1));
 		
-		if(lists.isEmpty()) {
+		if(!users.isPresent()) {
+			setReturnMeasge("Error - unknow user");
 			return;
 		}
 		
-		for(Listing l : lists) {
-			l.getCategory();
+		Sort sort = getSort(getArgs().get(3), getArgs().get(4));
+		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getArgs().get(1), getArgs().get(2), sort);
+		
+		if(lists.isEmpty()) {
+			setReturnMeasge("Error - category not found");
+			return;
 		}
+		
+		StringBuilder ret = new StringBuilder();
+		for(Listing l : lists) {
+			ret.append(l);
+			ret.append("\n");
+		}
+		
+		setReturnMeasge(ret.toString());	
 	}
 	
 	public Sort getSort(String sortColumn, String orderMethod) {

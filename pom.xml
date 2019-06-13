@@ -14,13 +14,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<sqlite.version>3.27.2</sqlite.version>
 	<sqlite-dialect.version>1.0</sqlite-dialect.version>
-	<junit.version>4.8.2</junit.version>
+	<junit.version>4.12</junit.version>
 	<springframework.version>5.1.7.RELEASE</springframework.version>
 	<springframework-data.version>2.1.8.RELEASE</springframework-data.version>
 	<hibernate.version>5.3.0.Final</hibernate.version>
 	<log4j.version>2.11.2</log4j.version>
 	<log4j.version>2.11.2</log4j.version>
 	<commons-cli.version>1.4</commons-cli.version>
+	<slf4j.version>1.7.26</slf4j.version>
   </properties>
 
   <dependencies>
@@ -86,6 +87,24 @@
     	<version>${commons-cli.version}</version>
 	</dependency>
 	
+	<dependency>
+       	<groupId>org.slf4j</groupId>
+       	<artifactId>slf4j-api</artifactId>
+       	<version>${slf4j.version}</version>
+   	</dependency>
+   	
+   	<dependency>
+       	<groupId>org.slf4j</groupId>
+       	<artifactId>slf4j-log4j12</artifactId>
+       	<version>${slf4j.version}</version>
+   	</dependency>
+   		
+   	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${springframework.version}</version>
+        <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <build>

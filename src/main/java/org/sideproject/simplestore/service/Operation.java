@@ -6,11 +6,20 @@ public abstract class Operation implements Command{
 	int errorCode;
 	String errorMeassge;
 	private List<String> args;
+	private String message;
 	
+	public String getReturnMessage() {
+		return this.message;
+	}
+
+	public void setReturnMeasge(String message) {
+		this.message = message;
+	}
+
 	abstract void doAction();
 	
 	public List<String> getArgs() {
-		return args;
+		return this.args;
 	}
 
 	public void setArgs(List<String> args) {
@@ -34,7 +43,9 @@ public abstract class Operation implements Command{
 //	}
 	
 	@Override
-	public void execute() {		
+	public String execute() {
 		doAction();
+		
+		return getReturnMessage();
 	}
 }

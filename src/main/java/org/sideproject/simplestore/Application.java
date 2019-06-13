@@ -5,12 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.sideproject.simplestore.service.CommandManager;
-import org.sideproject.simplestore.service.CreateListingCommand;
-import org.sideproject.simplestore.service.DeleteListingCommand;
-import org.sideproject.simplestore.service.GetCategoryCommand;
-import org.sideproject.simplestore.service.GetListingCommand;
-import org.sideproject.simplestore.service.RegisterUserCommand;
-import org.sideproject.simplestore.service.UserOP;
 import org.sideproject.simplestore.util.StringPaser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -37,10 +31,7 @@ public class Application
     	m.run();
     }
     
-    public void run() {
-    	//register all support command
-//    	register();
-    	
+    public void run() {    	
     	Scanner command = new Scanner(System.in);
     	
     	System.out.println("Welcome to simple store!!");
@@ -53,7 +44,9 @@ public class Application
         while(running){
         	String input = command.nextLine();
         	List<String> inputArgs = StringPaser.parse(input);
-        	commandManager.execute(inputArgs);
+        	String meassge = commandManager.execute(inputArgs);
+        	
+        	System.out.println(meassge);
         	
         	System.out.print("# ");
         }
@@ -62,12 +55,4 @@ public class Application
         System.out.println("Thank you!!");
         
     }
-
-//	private void register() {
-//		commandManager.register(UserOP.CREATEUSER, applicationContext.getBean(RegisterUserCommand.class));
-//		commandManager.register(UserOP.CREATELIST, applicationContext.getBean(CreateListingCommand.class));
-//		commandManager.register(UserOP.DELETELIST, applicationContext.getBean(DeleteListingCommand.class));
-//		commandManager.register(UserOP.GETLIST, applicationContext.getBean(GetListingCommand.class));
-//		commandManager.register(UserOP.GETCATEGORY, applicationContext.getBean(GetCategoryCommand.class));
-//	}
 }

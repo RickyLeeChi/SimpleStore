@@ -21,8 +21,8 @@ public class GetListingCommand extends Operation{
 	@Autowired
 	private ListingRepository listingRepository;
 	
-//	@Autowired
-//	private CategoryRepository categoryRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	public GetListingCommand() {
 		super();
@@ -30,16 +30,26 @@ public class GetListingCommand extends Operation{
 
 	@Override
 	void doAction() {
+		Optional<User> users = userRepository.findByUserNameIgnoreCase(getArgs().get(1));
 		
-		Optional<Listing> lists = listingRepository.findById(Integer.parseInt(getArgs().get(2)));
+		if(!users.isPresent()) {
+			setReturnMeasge("Error - unknow user");
+			return;
+		}
+		
+		Optional<Listing> lists = listingRepository.findByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
+		
 		
 		if(!lists.isPresent()) {
+			setReturnMeasge("Error - not found");
 			return;
 		}
 		
 		Listing l = lists.get();
 		
-		Category c = l.getCategory();
+		setReturnMeasge(l.toString());
+		
+		
 		
 //		
 //		lists.get().getCategory().getListings().remove(l);

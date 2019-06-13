@@ -160,4 +160,14 @@ public class Listing {
 			return this.listing;
 		}
 	}
+	
+	@Override
+	public String toString() { 
+	    return this.getTitle() + "|" + 
+	    		this.getDescription() + "|" + 
+	    		this.getPrice() + "|" + 
+	    		this.getCreationTime() + "|" +
+	    		this.getCategory().getCategory() + "|" + 
+	    		this.getUserName();
+	}
 }

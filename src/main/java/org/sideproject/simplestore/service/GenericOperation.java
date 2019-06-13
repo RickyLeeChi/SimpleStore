@@ -34,7 +34,8 @@ public class GenericOperation<T> implements Command{
 	}
 	
 	@Override
-	public void execute() {
+	public String execute() {
+		return null;
 		
 	}
 

@@ -7,5 +7,5 @@ import org.sideproject.simplestore.entity.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Integer>{
-	Optional<User> findByUserName(String userName);
+	Optional<User> findByUserNameIgnoreCase(String userName);
 }

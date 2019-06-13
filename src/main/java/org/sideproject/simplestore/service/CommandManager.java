@@ -18,6 +18,10 @@ public class CommandManager {
 
 		String serviceName = getCommandClassName(commands.get(0));
 		
+		if(serviceName.isEmpty()) {
+			return "Unsuppport opreation";
+		}
+		
 		Operation operation = (Operation) Application.applicationContext.getBean(serviceName);
 		
         if (operation == null) {

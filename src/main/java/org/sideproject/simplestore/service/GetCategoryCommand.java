@@ -47,8 +47,10 @@ public class GetCategoryCommand extends Operation{
 		
 		StringBuilder ret = new StringBuilder();
 		for(Listing l : lists) {
+			if(ret.length() > 0) {
+				ret.append("\n");
+			}
 			ret.append(l);
-			ret.append("\n");
 		}
 		
 		setReturnMeasge(ret.toString());	

@@ -22,15 +22,13 @@ public class Application
 	
     public static void main( String[] args )
     {
-    	applicationContext = new AnnotationConfigApplicationContext();
-    	applicationContext.register(Application.class);
-    	applicationContext.scan("org.sideproject.simplestore", "org.sideproject.simplestore.config", "org.sideproject.simplestore.service");
-    	applicationContext.refresh();   	
+    	init(); 	
 
     	Application m = applicationContext.getBean(Application.class);
+    	
     	m.run();
     }
-    
+
     public void run() {    	
     	Scanner command = new Scanner(System.in);
     	
@@ -55,4 +53,11 @@ public class Application
         System.out.println("Thank you!!");
         
     }
+    
+    private static void init() {	   
+ 	   applicationContext = new AnnotationConfigApplicationContext();
+ 	   applicationContext.register(Application.class);
+ 	   applicationContext.scan("org.sideproject.simplestore", "org.sideproject.simplestore.config", "org.sideproject.simplestore.service");
+ 	   applicationContext.refresh();  
+ 	}
 }

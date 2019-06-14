@@ -45,6 +45,8 @@ public class SimpleStoreTest {
 	@Autowired 
 	GetTopCategoryCommand getTopCategoryCommand;
 	
+	//Enhance test data
+	
 	//User
 	String registerCommand = "REGISTER";
 	String user1 = "ricky1";

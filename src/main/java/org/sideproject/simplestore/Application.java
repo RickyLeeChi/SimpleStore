@@ -11,17 +11,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Configuration
 @Component
 public class Application 
 {	
 	@Autowired
 	CommandManager commandManager;
 	
+	@Autowired
 	public static AnnotationConfigApplicationContext applicationContext;
 	
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
     	init(); 	
 
     	Application m = applicationContext.getBean(Application.class);
@@ -30,7 +29,7 @@ public class Application
     }
 
     public void run() {    	
-    	Scanner command = new Scanner(System.in);
+    	Scanner userInput = new Scanner(System.in);
     	
     	System.out.println("Welcome to simple store!!");
     	System.out.println("Please enter your operation : ");
@@ -40,7 +39,7 @@ public class Application
         boolean running = true;
         
         while(running){
-        	String input = command.nextLine();
+        	String input = userInput.nextLine();
         	List<String> inputArgs = StringPaser.parse(input);
         	String meassge = commandManager.execute(inputArgs);
         	
@@ -48,7 +47,7 @@ public class Application
         	
         	System.out.print("# ");
         }
-        command.close();
+        userInput.close();
         
         System.out.println("Thank you!!");
         

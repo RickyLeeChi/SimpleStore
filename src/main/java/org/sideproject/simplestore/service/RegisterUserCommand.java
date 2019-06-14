@@ -7,9 +7,10 @@ import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.entity.User.UserBuilder;
 import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service("RegisterUserCommand")
+@Component("REGISTER")
 public class RegisterUserCommand extends Operation{
 	@Autowired
 	private UserRepository userRepository;
@@ -17,6 +18,9 @@ public class RegisterUserCommand extends Operation{
 	public RegisterUserCommand() {
 		super();
 	}
+	
+	//
+	//command usage register
 	
 	@Override
 	void doAction() {		

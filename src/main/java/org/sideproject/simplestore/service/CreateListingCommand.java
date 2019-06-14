@@ -16,7 +16,7 @@ import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("CreateListingCommand")
+@Service("CREATE_LISTING")
 public class CreateListingCommand extends Operation{
 	
 	@Autowired

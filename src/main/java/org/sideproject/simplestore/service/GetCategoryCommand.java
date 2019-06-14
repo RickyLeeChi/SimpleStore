@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-@Service("GetCategoryCommand")
+@Service("GET_CATEGORY")
 public class GetCategoryCommand extends Operation{
 	@Autowired
 	private UserRepository userRepository;

@@ -11,7 +11,7 @@ import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("DeleteListingCommand")
+@Service("DELETE_LISTING")
 public class DeleteListingCommand extends Operation{
 	
 	@Autowired

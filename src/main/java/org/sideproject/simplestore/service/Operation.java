@@ -44,6 +44,8 @@ public abstract class Operation implements Command{
 	
 	@Override
 	public String execute() {
+		//Need check command validation method
+		
 		doAction();
 		
 		return getReturnMessage();

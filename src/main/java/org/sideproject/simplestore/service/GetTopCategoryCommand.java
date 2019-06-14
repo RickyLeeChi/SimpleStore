@@ -10,7 +10,7 @@ import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("GetTopCategoryCommand")
+@Service("GET_TOP_CATEGORY")
 public class GetTopCategoryCommand extends Operation{
 
 	@Autowired

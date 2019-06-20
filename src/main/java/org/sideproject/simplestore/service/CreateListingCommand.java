@@ -10,14 +10,16 @@ import org.sideproject.simplestore.entity.Listing;
 import org.sideproject.simplestore.entity.Listing.ListingBuilder;
 import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.entity.User.UserBuilder;
+import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service("CREATE_LISTING")
-public class CreateListingCommand extends Operation{
+@Component("CREATE_LISTING")
+public class CreateListingCommand extends Command{
 	
 	@Autowired
 	private ListingRepository listingRepository;
@@ -28,18 +30,31 @@ public class CreateListingCommand extends Operation{
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	private String commandName = "CREATE_LISTING";
+	private String commandUsage = "CREATE_LISTING <username> <title> <description> <price> <category>";
+	
 	public CreateListingCommand() {
 		super();
 	}
+	
+	@Override
+	public String getCommandName() {
+		return this.commandName;
+	}
+	
+	@Override
+	public String getCommandUsage() {
+		return this.commandUsage;
+	}
 
 	@Override
-	void doAction() {
+	public void doAction() {
 		User user = getUserByArgs();
 		
 		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(!users.isPresent()) {
-			setReturnMeasge("Error - unknown user");
+//			setReturnMeasge("Error - unknown user");
 			return;
 		}
 		
@@ -60,11 +75,26 @@ public class CreateListingCommand extends Operation{
 		
 		Listing returnList = listingRepository.save(list);
 		
-		setReturnMeasge(String.valueOf(returnList.getId()));
+//		setReturnMeasge(String.valueOf(returnList.getId()));
+	}
+	
+	@Override
+	public void validateCommand() throws UnsupportCommandException {
+		List<String> commands = getCommands();
+		
+		try {
+			//Check command	
+			if(!commands.get(0).equalsIgnoreCase(commandName)) {
+				throw new UnsupportCommandException(commands.get(0));
+			}
+			
+		} catch (Exception e) {
+			throw new UnsupportCommandException(e, commands.get(0));
+		}
 	}
 	
 	private User getUserByArgs() {
-		List<String> args = getArgs();
+		List<String> args = getCommands();
 
 		String userName = args.get(1);
 		
@@ -76,7 +106,7 @@ public class CreateListingCommand extends Operation{
 	}
 	
 	private Category getCategoryByArgs() {
-		List<String> args = getArgs();
+		List<String> args = getCommands();
 		
 		Category category = new CategoryBuilder()
 							.setCategory(args.get(5))
@@ -86,7 +116,7 @@ public class CreateListingCommand extends Operation{
 	}
 	
 	private Listing getListingByArgs(User user, Category category) {
-		List<String> args = getArgs();
+		List<String> args = getCommands();
 		
 		Listing list = new ListingBuilder()
 				   .setUserName(args.get(1))
@@ -99,5 +129,17 @@ public class CreateListingCommand extends Operation{
 				   .build();
 				
 		return list;
+	}
+
+	@Override
+	public void beforeAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afterAction() {
+		// TODO Auto-generated method stub
+		
 	}
 }

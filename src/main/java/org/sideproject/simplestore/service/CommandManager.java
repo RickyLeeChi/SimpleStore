@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sideproject.simplestore.Application;
+import org.sideproject.simplestore.exception.CommandParseFailException;
+import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,31 +20,29 @@ public class CommandManager {
 	@Autowired
 	public ApplicationContext applicationContext;
 	
-	public String execute(List<String> commands) {
+	public void execute(List<String> commands) throws UnsupportCommandException {
 		if(commands.isEmpty()) {
-			return "Unsuppport opreation";
+			throw new UnsupportCommandException("");
 		}
 		
 		String serviceName = commands.get(0);
 		
 		if(serviceName.isEmpty()) {
-			return "Unsuppport opreation";
+			throw new UnsupportCommandException("");
 		}
 		
 		//
 		//Refelection getsubtypeof
 		//Need get object every time? 
-		Operation operation = (Operation) applicationContext.getBean(serviceName);
+		Command cmd = (Command) applicationContext.getBean(serviceName);
 		
-        if (operation == null) {
+        if (cmd == null) {
         	logger.info("Command [{}] does NOT support", commands.get(0));
-        	return "Command " + commands.get(0) + " does NOT support";
+        	throw new UnsupportCommandException(commands.get(0));
         }
         
-        operation.setArgs(commands);
+        cmd.setCommands(commands);
         
-        String message = operation.execute();
-        
-        return message;
+        cmd.execute();
 	}
 }

@@ -22,6 +22,7 @@
 	<log4j.version>2.11.2</log4j.version>
 	<commons-cli.version>1.4</commons-cli.version>
 	<slf4j.version>1.7.26</slf4j.version>
+	<commons-configuration2.version>2.0</commons-configuration2.version>
   </properties>
 
   <dependencies>
@@ -105,6 +106,12 @@
         <version>${springframework.version}</version>
         <scope>test</scope>
     </dependency>
+    
+    <dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-configuration2</artifactId>
+    	<version>${commons-configuration2.version}</version>
+	</dependency>
   </dependencies>
   
   <build>

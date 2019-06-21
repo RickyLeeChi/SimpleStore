@@ -9,6 +9,7 @@ import org.sideproject.simplestore.entity.Listing;
 import org.sideproject.simplestore.entity.Listing.ListingBuilder;
 import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.entity.User.UserBuilder;
+import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
@@ -17,31 +18,46 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service("GET_CATEGORY")
-public class GetCategoryCommand extends Operation{
+public class GetCategoryCommand extends Command{
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	private String commandName = "GET_CATEGORY";
+	private String commandUsage = "GET_CATEGORY <username> <category> {sort_price|sort_time} {asc|dsc}";
+	
 	public GetCategoryCommand() {
 		super();
 	}
+	
+	@Override
+	public String getCommandName() {
+		return this.commandName;
+	}
+	
+	@Override
+	public String getCommandUsage() {
+		return this.commandUsage;
+	}
 
 	@Override
-	void doAction() {
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(getArgs().get(1));
+	public void doAction() {
+		Optional<User> users = userRepository.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
-			setReturnMeasge("Error - unknow user");
+			setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_UNKNOWN_USER));
+//			setReturnMeasge("Error - unknow user");
 			return;
 		}
 		
-		Sort sort = getSort(getArgs().get(3), getArgs().get(4));
-		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getArgs().get(1), getArgs().get(2), sort);
+		Sort sort = getSort(getCommands().get(3), getCommands().get(4));
+		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getCommands().get(1), getCommands().get(2), sort);
 		
 		if(lists.isEmpty()) {
-			setReturnMeasge("Error - category not found");
+			setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_NOT_FOUND));
+//			setReturnMeasge("Error - category not found");
 			return;
 		}
 		
@@ -53,7 +69,8 @@ public class GetCategoryCommand extends Operation{
 			ret.append(l);
 		}
 		
-		setReturnMeasge(ret.toString());	
+		setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_SUCCESS, ret.toString()));
+//		setReturnMeasge(ret.toString());	
 	}
 	
 	public Sort getSort(String sortColumn, String orderMethod) {
@@ -98,6 +115,33 @@ public class GetCategoryCommand extends Operation{
 		public String getOrderMethod() {
 			return this.orderMethod;
 		}
+	}
+	
+	@Override
+	public void validateCommand() throws UnsupportCommandException {
+		List<String> commands = getCommands();
+		
+		try {
+			//Check command	
+			if(!commands.get(0).equalsIgnoreCase(commandName)) {
+				throw new UnsupportCommandException(commands.get(0));
+			}
+			
+		} catch (Exception e) {
+			throw new UnsupportCommandException(e, commands.get(0));
+		}
+	}
+	
+	@Override
+	public void beforeAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void afterAction() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 //	public class SortFactory {

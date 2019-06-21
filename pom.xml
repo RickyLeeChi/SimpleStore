@@ -23,6 +23,7 @@
 	<commons-cli.version>1.4</commons-cli.version>
 	<slf4j.version>1.7.26</slf4j.version>
 	<commons-configuration2.version>2.0</commons-configuration2.version>
+	<commons-beanutils.version>1.9.3</commons-beanutils.version>
   </properties>
 
   <dependencies>
@@ -112,6 +113,13 @@
     	<artifactId>commons-configuration2</artifactId>
     	<version>${commons-configuration2.version}</version>
 	</dependency>
+	
+	<dependency>
+    	<groupId>commons-beanutils</groupId>
+    	<artifactId>commons-beanutils</artifactId>
+    	<version>${commons-beanutils.version}</version>
+	</dependency>
+	
   </dependencies>
   
   <build>

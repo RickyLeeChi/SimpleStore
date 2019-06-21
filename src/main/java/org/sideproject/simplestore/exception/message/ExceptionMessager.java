@@ -17,7 +17,7 @@ public class ExceptionMessager {
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public static final String DEFAULT_ERROR_CODE = "000";
-	public static final String EXCEPTION_MESSAGE_FILE = "exceptions.messsages";
+	public static final String EXCEPTION_MESSAGE_FILE = "exceptions.messages";
 	
 	private Map<String, String> messageMap;
 	private static ExceptionMessager singleton;

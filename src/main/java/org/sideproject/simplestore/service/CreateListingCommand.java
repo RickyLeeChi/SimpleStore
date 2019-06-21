@@ -54,6 +54,7 @@ public class CreateListingCommand extends Command{
 		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(!users.isPresent()) {
+			setRetObj(new ResponseObject(ResponseObject.Status.CREATE_LIST_UNKNOWN_USER));
 //			setReturnMeasge("Error - unknown user");
 			return;
 		}
@@ -75,6 +76,7 @@ public class CreateListingCommand extends Command{
 		
 		Listing returnList = listingRepository.save(list);
 		
+		setRetObj(new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(returnList.getId())));
 //		setReturnMeasge(String.valueOf(returnList.getId()));
 	}
 	

@@ -4,27 +4,21 @@ import java.util.List;
 import java.util.Optional;
 
 import org.sideproject.simplestore.entity.Category;
+import org.sideproject.simplestore.entity.Listing;
 import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
+import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component("GET_TOP_CATEGORY")
-public class GetTopCategoryCommand extends Command{
-
-	@Autowired
-	private UserRepository userRepository;
+@Service("Close")
+public class CloseApplicationCommand extends Command{	
+	private String commandName = "Close";
+	private String commandUsage = "Close";
 	
-	@Autowired
-	private CategoryRepository categoryRepository;
-	
-	private String commandName = "GET_TOP_CATEGORY";
-	private String commandUsage = "GET_TOP_CATEGORY <username>";
-	
-	public GetTopCategoryCommand() {
+	public CloseApplicationCommand() {
 		super();
 	}
 
@@ -40,24 +34,7 @@ public class GetTopCategoryCommand extends Command{
 	
 	@Override
 	public void doAction() {
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(getCommands().get(1));
-		
-		if(!users.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_UNKNOWN_USER));
-//			setReturnMeasge("Error - unknow user");
-			return;
-		}
-		
-		List<Category> category = categoryRepository.findTopCategoryByUserNameQuery(getCommands().get(1));
-				
-		if(category.isEmpty()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_NO_LIST_EXISTING));
-//			setReturnMeasge("No listing exist");
-			return;
-		}
-		
-		setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_SUCCESS, category.get(0).getCategory()));
-//		setReturnMeasge(category.get(0).getCategory());
+		setRetObj(new ResponseObject(ResponseObject.Status.CLOSE_APPLICATION));
 	}
 	
 	@Override

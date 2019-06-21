@@ -7,6 +7,7 @@ import java.util.Scanner;
 import org.sideproject.simplestore.exception.CommandParseFailException;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.service.CommandManager;
+import org.sideproject.simplestore.service.ResponseObject;
 import org.sideproject.simplestore.util.CommandPaser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -47,14 +48,34 @@ public class Application
         	
 //        	System.out.println(meassge);
         	
-        	commandManager.execute(inputArgs);
+        	ResponseObject response = handleCommand(inputArgs);
+//        	commandManager.execute(inputArgs);
+        	
+        	System.out.println(response.getMessage());
+        	
+        	if(response.getStatus() == ResponseObject.Status.CLOSE_APPLICATION) {
+                userInput.close();
+                System.out.println("Bye ~ Bye!!");
+        		System.exit(0);
+        	}
         	
         	System.out.print("# ");
         }
-        userInput.close();
-        
-        System.out.println("Thank you!!");
-        
+    }
+    
+    public ResponseObject handleCommand(List<String> inputArgs) {
+    	ResponseObject retobj;
+    	
+    	try {
+    		commandManager.execute(inputArgs);
+    		
+    		retobj = commandManager.getResponseObj();
+    		
+		} catch (UnsupportCommandException e) {
+			retobj = new ResponseObject(ResponseObject.Status.EXCEPTION_OCCUR, e.getMessage());
+		}
+    	
+    	return retobj;
     }
     
     private static void init() {

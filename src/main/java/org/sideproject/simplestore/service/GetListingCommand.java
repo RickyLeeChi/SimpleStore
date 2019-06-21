@@ -9,14 +9,16 @@ import org.sideproject.simplestore.entity.Listing;
 import org.sideproject.simplestore.entity.Listing.ListingBuilder;
 import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.entity.User.UserBuilder;
+import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service("GET_LISTING")
-public class GetListingCommand extends Operation{
+@Component("GET_LISTING")
+public class GetListingCommand extends Command{
 	
 	@Autowired
 	private ListingRepository listingRepository;
@@ -24,41 +26,72 @@ public class GetListingCommand extends Operation{
 	@Autowired
 	private UserRepository userRepository;
 	
+	private String commandName = "GET_LISTING";
+	private String commandUsage = "GET_LISTING <username> <listing_id>";
+	
 	public GetListingCommand() {
 		super();
 	}
+	
+	@Override
+	public String getCommandName() {
+		return this.commandName;
+	}
+	
+	@Override
+	public String getCommandUsage() {
+		return this.commandUsage;
+	}
 
 	@Override
-	void doAction() {
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(getArgs().get(1));
+	public void doAction() {
+		Optional<User> users = userRepository.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
-			setReturnMeasge("Error - unknow user");
+			setRetObj(new ResponseObject(ResponseObject.Status.GET_LISTING_UNKNOWN_USER));
+//			setReturnMeasge("Error - unknow user");
 			return;
 		}
 		
-		Optional<Listing> lists = listingRepository.findByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
+		Optional<Listing> lists = listingRepository.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
 		
 		
 		if(!lists.isPresent()) {
-			setReturnMeasge("Error - not found");
+			setRetObj(new ResponseObject(ResponseObject.Status.GET_LISTING_NOT_FOUND));
+//			setReturnMeasge("Error - not found");
 			return;
 		}
 		
 		Listing l = lists.get();
 		
-		setReturnMeasge(l.toString());
+		setRetObj(new ResponseObject(ResponseObject.Status.GET_LISTING_SUCCESS, l.toString()));
+//		setReturnMeasge(l.toString());
+	}
+	
+	@Override
+	public void validateCommand() throws UnsupportCommandException {
+		List<String> commands = getCommands();
 		
+		try {
+			//Check command	
+			if(!commands.get(0).equalsIgnoreCase(commandName)) {
+				throw new UnsupportCommandException(commands.get(0));
+			}
+			
+		} catch (Exception e) {
+			throw new UnsupportCommandException(e, commands.get(0));
+		}
+	}
+	
+	@Override
+	public void beforeAction() {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void afterAction() {
+		// TODO Auto-generated method stub
 		
-//		
-//		lists.get().getCategory().getListings().remove(l);
-		
-//		Optional<Listing> lists = listingRepository.findByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
-//		Listing l = lists.get();
-//		
-//		listingRepository.delete(l);
-		
-//		listingRepository.deleteByIdAndUserName(Integer.parseInt(getArgs().get(2)), getArgs().get(1));
 	}
 }

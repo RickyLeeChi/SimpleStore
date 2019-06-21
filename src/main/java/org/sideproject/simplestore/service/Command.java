@@ -5,10 +5,8 @@ import java.util.List;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 
 public abstract class Command {
-	int errorCode;
-	String errorMeassge;
 	private List<String> commands;
-	private String message;
+	private ResponseObject retObj = new ResponseObject(ResponseObject.Status.UNKNOWN);
 	
 	public abstract void validateCommand() throws UnsupportCommandException;
 	public abstract void beforeAction();
@@ -24,6 +22,14 @@ public abstract class Command {
 
 	public void setCommands(List<String> commands) {
 		this.commands = commands;
+	}
+	
+	public ResponseObject getRetObj() {
+		return retObj;
+	}
+	
+	public void setRetObj(ResponseObject retObj) {
+		this.retObj = retObj;
 	}
 	
 	public void execute() throws UnsupportCommandException{

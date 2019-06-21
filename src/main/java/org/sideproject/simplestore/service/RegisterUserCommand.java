@@ -40,11 +40,13 @@ public class RegisterUserCommand extends Command{
 		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(users.isPresent()) {
+			setRetObj(new ResponseObject(ResponseObject.Status.REGISTER_USER_ALREADY_EXISTING));
 //			setReturnMeasge("Error - user already existing");
 			return;
 		}
 		
 		userRepository.save(user);
+		setRetObj(new ResponseObject(ResponseObject.Status.REGISTER_USER_SUCCESS));
 //		setReturnMeasge("Success");		
 	}
 	

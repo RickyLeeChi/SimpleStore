@@ -24,14 +24,40 @@ public class CommandManager {
 	@Autowired
 	public ApplicationContext applicationContext;
 	
+	//Cache for Commands
 	private Map<String, Command> commandCache= new HashMap<String, Command>();
 	
 	Command cmd;
+	
+	public void loadAllCommands() {
+		//
+		//Refelection getsubtypeof
+		//Need get object every time? 
+		//
+		if(!commandCache.isEmpty()) {
+			return;
+		}
+		
+		GenericApplicationContext ctx = new GenericApplicationContext(applicationContext);
+		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
+		scanner.scan("org.sideproject.simplestore.service");
+		ctx.refresh();
+        
+		String[] beanDefinitionNames = ctx.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+        	if(ctx.getBean(beanDefinitionName) instanceof Command) {
+            	commandCache.put(beanDefinitionName, (Command)ctx.getBean(beanDefinitionName));
+        	}
+        }
+		//
+	}
 	
 	public void execute(List<String> commands) throws UnsupportCommandException {
 		if(commands.isEmpty()) {
 			throw new UnsupportCommandException("");
 		}
+		
+		loadAllCommands();
 		
 		String serviceName = commands.get(0);
 		
@@ -39,17 +65,9 @@ public class CommandManager {
 			throw new UnsupportCommandException("");
 		}
 		
-		//
-		//Refelection getsubtypeof
-		//Need get object every time? 
-		//
-		GenericApplicationContext ctx = new GenericApplicationContext(applicationContext);
-		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
-		//
-		
-		
 		try {
-			cmd = (Command) applicationContext.getBean(serviceName);
+			cmd = commandCache.get(serviceName);
+//			cmd = (Command) applicationContext.getBean(serviceName);
 		} catch (Exception e) {
 			throw new UnsupportCommandException(commands.get(0));
 		}

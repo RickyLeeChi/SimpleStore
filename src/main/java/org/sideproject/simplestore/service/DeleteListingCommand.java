@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
 public class DeleteListingCommand extends Command{
 	
 	@Autowired
-	private ListingRepository listingRepository;
+	private ListingService listingService;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 	
 	private String commandName = "DELETE_LISTING";
 	private String commandUsage = "DELETE_LISTING <username> <listing_id>";
@@ -44,7 +44,7 @@ public class DeleteListingCommand extends Command{
 	
 	@Override
 	public void doAction() {
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(getCommands().get(1));
+		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_UNKNOWN_USER));
@@ -52,7 +52,7 @@ public class DeleteListingCommand extends Command{
 			return;
 		}
 		
-		Optional<Listing> lists = listingRepository.findById(Integer.parseInt(getCommands().get(2)));
+		Optional<Listing> lists = listingService.findById(Integer.parseInt(getCommands().get(2)));
 		
 		if(!lists.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_NOT_EXISTING));
@@ -60,7 +60,7 @@ public class DeleteListingCommand extends Command{
 			return;
 		}
 		
-		lists = listingRepository.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
+		lists = listingService.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
 		
 		if(!lists.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_OWNER_MISMATCH));
@@ -75,10 +75,10 @@ public class DeleteListingCommand extends Command{
 		c.getListings().remove(l);
 		
 		if(c.getListings().isEmpty()) {
-			categoryRepository.delete(c);
+			categoryService.delete(c);
 		}		
 		else {
-			categoryRepository.save(c);
+			categoryService.save(c);
 		}
 		
 		setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_SUCCESS));

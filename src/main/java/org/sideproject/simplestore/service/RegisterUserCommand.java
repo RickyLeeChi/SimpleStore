@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Component("REGISTER")
 public class RegisterUserCommand extends Command{
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	private String commandName = "REGISTER";
 	private String commandUsage = "REGISTER <username>";
@@ -37,7 +37,7 @@ public class RegisterUserCommand extends Command{
 	public void doAction() {		
 		User user = getUserByCommands();
 			
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
+		Optional<User> users = userService.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(users.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.REGISTER_USER_ALREADY_EXISTING));
@@ -45,7 +45,7 @@ public class RegisterUserCommand extends Command{
 			return;
 		}
 		
-		userRepository.save(user);
+		userService.save(user);
 		setRetObj(new ResponseObject(ResponseObject.Status.REGISTER_USER_SUCCESS));
 //		setReturnMeasge("Success");		
 	}

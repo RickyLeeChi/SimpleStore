@@ -35,6 +35,9 @@ public class ResponseObject {
 		//EXIT
 		CLOSE_APPLICATION("Close application"),
 		
+		//HELP
+		HELP("{0}"),
+		
 		//
 		EXCEPTION_OCCUR("{0}"),
 		

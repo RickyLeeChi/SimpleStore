@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service;
 public class CreateListingCommand extends Command{
 	
 	@Autowired
-	private ListingRepository listingRepository;
+	private ListingService listingService;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 	
 	private String commandName = "CREATE_LISTING";
 	private String commandUsage = "CREATE_LISTING <username> <title> <description> <price> <category>";
@@ -51,7 +51,7 @@ public class CreateListingCommand extends Command{
 	public void doAction() {
 		User user = getUserByArgs();
 		
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(user.getUserName());
+		Optional<User> users = userService.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(!users.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.CREATE_LIST_UNKNOWN_USER));
@@ -63,18 +63,18 @@ public class CreateListingCommand extends Command{
 	
 		Category category = getCategoryByArgs();
 		
-		Optional<Category> categoryInDB=  categoryRepository.findByCategory(category.getCategory());
+		Optional<Category> categoryInDB=  categoryService.findByCategory(category.getCategory());
 		
 		if(categoryInDB.isPresent()) {
 			category = categoryInDB.get();
 		}
 		else {
-			categoryRepository.save(category);
+			categoryService.save(category);
 		}
 		
 		Listing list = getListingByArgs(user, category);
 		
-		Listing returnList = listingRepository.save(list);
+		Listing returnList = listingService.save(list);
 		
 		setRetObj(new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(returnList.getId())));
 //		setReturnMeasge(String.valueOf(returnList.getId()));

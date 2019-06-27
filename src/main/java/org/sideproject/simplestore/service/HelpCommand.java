@@ -4,35 +4,24 @@ import java.util.List;
 import java.util.Optional;
 
 import org.sideproject.simplestore.entity.Category;
-import org.sideproject.simplestore.entity.Category.CategoryBuilder;
 import org.sideproject.simplestore.entity.Listing;
-import org.sideproject.simplestore.entity.Listing.ListingBuilder;
 import org.sideproject.simplestore.entity.User;
-import org.sideproject.simplestore.entity.User.UserBuilder;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component("GET_LISTING")
-public class GetListingCommand extends Command{
+@Service("Help")
+public class HelpCommand extends Command{	
+	private String commandName = "Help";
+	private String commandUsage = "Help";
 	
-	@Autowired
-	private ListingService listingService;
-	
-	@Autowired
-	private UserService userService;
-	
-	private String commandName = "GET_LISTING";
-	private String commandUsage = "GET_LISTING <username> <listing_id>";
-	
-	public GetListingCommand() {
+	public HelpCommand() {
 		super();
 	}
-	
+
 	@Override
 	public String getCommandName() {
 		return this.commandName;
@@ -42,30 +31,10 @@ public class GetListingCommand extends Command{
 	public String getCommandUsage() {
 		return this.commandUsage;
 	}
-
+	
 	@Override
-	public void doAction() {
-		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
-		
-		if(!users.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_LISTING_UNKNOWN_USER));
-//			setReturnMeasge("Error - unknow user");
-			return;
-		}
-		
-		Optional<Listing> lists = listingService.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
-		
-		
-		if(!lists.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_LISTING_NOT_FOUND));
-//			setReturnMeasge("Error - not found");
-			return;
-		}
-		
-		Listing l = lists.get();
-		
-		setRetObj(new ResponseObject(ResponseObject.Status.GET_LISTING_SUCCESS, l.toString()));
-//		setReturnMeasge(l.toString());
+	public void doAction() {		
+		setRetObj(new ResponseObject(ResponseObject.Status.HELP));
 	}
 	
 	@Override

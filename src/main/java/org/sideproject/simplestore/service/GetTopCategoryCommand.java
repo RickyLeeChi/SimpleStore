@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 @Component("GET_TOP_CATEGORY")
 public class GetTopCategoryCommand extends Command{
-
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private UserService userService;
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	private String commandName = "GET_TOP_CATEGORY";
 	private String commandUsage = "GET_TOP_CATEGORY <username>";
@@ -40,7 +40,7 @@ public class GetTopCategoryCommand extends Command{
 	
 	@Override
 	public void doAction() {
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(getCommands().get(1));
+		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_UNKNOWN_USER));
@@ -48,7 +48,7 @@ public class GetTopCategoryCommand extends Command{
 			return;
 		}
 		
-		List<Category> category = categoryRepository.findTopCategoryByUserNameQuery(getCommands().get(1));
+		List<Category> category = categoryService.findTopCategoryByUserNameQuery(getCommands().get(1));
 				
 		if(category.isEmpty()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_NO_LIST_EXISTING));

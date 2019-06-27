@@ -18,12 +18,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service("GET_CATEGORY")
-public class GetCategoryCommand extends Command{
+public class GetCategoryCommand extends Command{	
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 	
 	private String commandName = "GET_CATEGORY";
 	private String commandUsage = "GET_CATEGORY <username> <category> {sort_price|sort_time} {asc|dsc}";
@@ -44,7 +44,7 @@ public class GetCategoryCommand extends Command{
 
 	@Override
 	public void doAction() {
-		Optional<User> users = userRepository.findByUserNameIgnoreCase(getCommands().get(1));
+		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_UNKNOWN_USER));
@@ -53,7 +53,7 @@ public class GetCategoryCommand extends Command{
 		}
 		
 		Sort sort = getSort(getCommands().get(3), getCommands().get(4));
-		List<Listing> lists = categoryRepository.findAllListingByUserNameAndCategoryQuery(getCommands().get(1), getCommands().get(2), sort);
+		List<Listing> lists = categoryService.findAllListingByUserNameAndCategoryQuery(getCommands().get(1), getCommands().get(2), sort);
 		
 		if(lists.isEmpty()) {
 			setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_NOT_FOUND));

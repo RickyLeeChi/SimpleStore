@@ -7,19 +7,18 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.sideproject.simplestore.command.CreateListingCommand;
+import org.sideproject.simplestore.command.DeleteListingCommand;
+import org.sideproject.simplestore.command.GetCategoryCommand;
+import org.sideproject.simplestore.command.GetListingCommand;
+import org.sideproject.simplestore.command.GetTopCategoryCommand;
+import org.sideproject.simplestore.command.RegisterUserCommand;
+import org.sideproject.simplestore.command.ResponseObject;
 import org.sideproject.simplestore.config.DBConfig;
 import org.sideproject.simplestore.exception.CommandParseFailException;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.service.CategoryServiceImpl;
-import org.sideproject.simplestore.service.CreateListingCommand;
-import org.sideproject.simplestore.service.DeleteListingCommand;
-import org.sideproject.simplestore.service.GetCategoryCommand;
-import org.sideproject.simplestore.service.GetListingCommand;
-import org.sideproject.simplestore.service.GetTopCategoryCommand;
 import org.sideproject.simplestore.service.ListingServiceImpl;
-import org.sideproject.simplestore.service.RegisterUserCommand;
-import org.sideproject.simplestore.service.ResponseObject;
-import org.sideproject.simplestore.service.UserService;
 import org.sideproject.simplestore.service.UserServiceImpl;
 import org.sideproject.simplestore.util.CommandPaser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,9 +89,7 @@ public class SimpleStoreTest {
 
 		registerUserCommand.setCommands(arg);
 		
-		registerUserCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = registerUserCommand.execute();
 		
 		System.out.println(ret.getMessage());
 		assertEquals("Success",ret.getMessage());
@@ -106,10 +103,8 @@ public class SimpleStoreTest {
 
 		registerUserCommand.setCommands(arg);
 		
-		registerUserCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
-		
+		ResponseObject ret = registerUserCommand.execute();
+
 		System.out.println(ret.getMessage());
 		assertEquals("Success",ret.getMessage());
 	}
@@ -123,9 +118,7 @@ public class SimpleStoreTest {
 		
 		createListingCommand.setCommands(arg);
 		
-		createListingCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = createListingCommand.execute();
 		
 		System.out.println(ret.getMessage());
 	}
@@ -139,9 +132,7 @@ public class SimpleStoreTest {
 		
 		createListingCommand.setCommands(arg);
 		
-		createListingCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = createListingCommand.execute();
 		
 		System.out.println(ret.getMessage());
 	}
@@ -155,9 +146,7 @@ public class SimpleStoreTest {
 		
 		createListingCommand.setCommands(arg);
 		
-		createListingCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = createListingCommand.execute();
 		
 		System.out.println(ret.getMessage());
 	}
@@ -171,9 +160,7 @@ public class SimpleStoreTest {
 		
 		createListingCommand.setCommands(arg);
 		
-		createListingCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = createListingCommand.execute();
 		
 		System.out.println(ret.getMessage());
 	}
@@ -187,9 +174,7 @@ public class SimpleStoreTest {
 		
 		createListingCommand.setCommands(arg);
 		
-		createListingCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = createListingCommand.execute();
 		
 		System.out.println(ret.getMessage());
 	}
@@ -203,9 +188,7 @@ public class SimpleStoreTest {
 		
 		createListingCommand.setCommands(arg);
 		
-		createListingCommand.execute();
-		
-		ResponseObject ret = registerUserCommand.getRetObj();
+		ResponseObject ret = createListingCommand.execute();
 		
 		System.out.println(ret.getMessage());
 	}
@@ -219,10 +202,8 @@ public class SimpleStoreTest {
 		
 		getCategoryCommand.setCommands(arg);
 		
-		getCategoryCommand.execute();
-		
-		ResponseObject ret = getCategoryCommand.getRetObj();
-		
+		ResponseObject ret = getCategoryCommand.execute();
+			
 		System.out.println(ret.getMessage());
 	}
 	
@@ -235,9 +216,7 @@ public class SimpleStoreTest {
 		
 		getTopCategoryCommand.setCommands(arg);
 		
-		getTopCategoryCommand.execute();
-		
-		ResponseObject ret = getTopCategoryCommand.getRetObj();	
+		ResponseObject ret = getTopCategoryCommand.execute();	
 		
 		System.out.println(ret.getMessage());
 	}

@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 public class ResponseObject {
 	private Status status = Status.UNKNOWN; 

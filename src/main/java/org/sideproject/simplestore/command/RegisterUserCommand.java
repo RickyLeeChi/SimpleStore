@@ -1,27 +1,29 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.sideproject.simplestore.entity.Category;
-import org.sideproject.simplestore.entity.Listing;
 import org.sideproject.simplestore.entity.User;
+import org.sideproject.simplestore.entity.User.UserBuilder;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
-import org.sideproject.simplestore.repository.CategoryRepository;
-import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
+import org.sideproject.simplestore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service("Close")
-public class CloseApplicationCommand extends Command{	
-	private String commandName = "Close";
-	private String commandUsage = "Close";
+@Component("REGISTER")
+public class RegisterUserCommand extends Command{
+	@Autowired
+	private UserService userService;
 	
-	public CloseApplicationCommand() {
+	private String commandName = "REGISTER";
+	private String commandUsage = "REGISTER <username>";
+
+	public RegisterUserCommand() {
 		super();
 	}
-
+	
 	@Override
 	public String getCommandName() {
 		return this.commandName;
@@ -33,10 +35,31 @@ public class CloseApplicationCommand extends Command{
 	}
 	
 	@Override
-	public void doAction() {
-		setRetObj(new ResponseObject(ResponseObject.Status.CLOSE_APPLICATION));
+	public ResponseObject doAction() {		
+		User user = getUserByCommands();
+			
+		Optional<User> users = userService.findByUserNameIgnoreCase(user.getUserName());
+		
+		if(users.isPresent()) {
+			return new ResponseObject(ResponseObject.Status.REGISTER_USER_ALREADY_EXISTING);
+		}
+		
+		userService.save(user);
+		return new ResponseObject(ResponseObject.Status.REGISTER_USER_SUCCESS);	
 	}
 	
+	private User getUserByCommands() {
+		List<String> args = getCommands();
+
+		String userName = args.get(1);
+		
+		User user = new UserBuilder()
+				.setUserName(userName)
+				.build();
+				
+		return user;
+	}
+
 	@Override
 	public void validateCommand() throws UnsupportCommandException {
 		List<String> commands = getCommands();
@@ -51,7 +74,7 @@ public class CloseApplicationCommand extends Command{
 			throw new UnsupportCommandException(e, commands.get(0));
 		}
 	}
-	
+
 	@Override
 	public void beforeAction() {
 		// TODO Auto-generated method stub

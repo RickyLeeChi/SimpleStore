@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +13,8 @@ import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
+import org.sideproject.simplestore.service.CategoryService;
+import org.sideproject.simplestore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -43,22 +45,18 @@ public class GetCategoryCommand extends Command{
 	}
 
 	@Override
-	public void doAction() {
+	public ResponseObject doAction() {
 		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_UNKNOWN_USER));
-//			setReturnMeasge("Error - unknow user");
-			return;
+			return new ResponseObject(ResponseObject.Status.GET_CATEGORY_UNKNOWN_USER);
 		}
 		
 		Sort sort = getSort(getCommands().get(3), getCommands().get(4));
 		List<Listing> lists = categoryService.findAllListingByUserNameAndCategoryQuery(getCommands().get(1), getCommands().get(2), sort);
 		
 		if(lists.isEmpty()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_NOT_FOUND));
-//			setReturnMeasge("Error - category not found");
-			return;
+			return new ResponseObject(ResponseObject.Status.GET_CATEGORY_NOT_FOUND);
 		}
 		
 		StringBuilder ret = new StringBuilder();
@@ -69,8 +67,7 @@ public class GetCategoryCommand extends Command{
 			ret.append(l);
 		}
 		
-		setRetObj(new ResponseObject(ResponseObject.Status.GET_CATEGORY_SUCCESS, ret.toString()));
-//		setReturnMeasge(ret.toString());	
+		return new ResponseObject(ResponseObject.Status.GET_CATEGORY_SUCCESS, ret.toString());	
 	}
 	
 	public Sort getSort(String sortColumn, String orderMethod) {

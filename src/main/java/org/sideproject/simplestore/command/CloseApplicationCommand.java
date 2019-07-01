@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +13,12 @@ import org.sideproject.simplestore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("Help")
-public class HelpCommand extends Command{	
-	private String commandName = "Help";
-	private String commandUsage = "Help";
+@Service("Close")
+public class CloseApplicationCommand extends Command{	
+	private String commandName = "Close";
+	private String commandUsage = "Close";
 	
-	public HelpCommand() {
+	public CloseApplicationCommand() {
 		super();
 	}
 
@@ -33,8 +33,8 @@ public class HelpCommand extends Command{
 	}
 	
 	@Override
-	public void doAction() {		
-		setRetObj(new ResponseObject(ResponseObject.Status.HELP));
+	public ResponseObject doAction() {
+		return new ResponseObject(ResponseObject.Status.CLOSE_APPLICATION);
 	}
 	
 	@Override

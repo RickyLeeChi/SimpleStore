@@ -4,10 +4,11 @@ package org.sideproject.simplestore;
 import java.util.List;
 import java.util.Scanner;
 
+import org.sideproject.simplestore.command.Command;
+import org.sideproject.simplestore.command.CommandManager;
+import org.sideproject.simplestore.command.ResponseObject;
 import org.sideproject.simplestore.exception.CommandParseFailException;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
-import org.sideproject.simplestore.service.CommandManager;
-import org.sideproject.simplestore.service.ResponseObject;
 import org.sideproject.simplestore.util.CommandPaser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -17,6 +18,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Application 
 {	
+	/*
+	 * Service business logic
+	 * Build.sh run.sh
+	 * 
+	 * Generate Command manager get command usage
+	 * 
+	 */
+	
 	@Autowired
 	CommandManager commandManager;
 	
@@ -44,12 +53,8 @@ public class Application
         while(running){
         	String input = userInput.nextLine();
         	List<String> inputArgs = CommandPaser.parse(input);
-//        	String meassge = commandManager.execute(inputArgs);
-        	
-//        	System.out.println(meassge);
         	
         	ResponseObject response = handleCommand(inputArgs);
-//        	commandManager.execute(inputArgs);
         	
         	System.out.println(response.getMessage());
         	
@@ -67,10 +72,10 @@ public class Application
     	ResponseObject retobj;
     	
     	try {
-    		commandManager.execute(inputArgs);
+    		Command command = commandManager.getCommand(inputArgs.get(0));
+    		command.setCommands(inputArgs);
     		
-    		retobj = commandManager.getResponseObj();
-    		
+    		retobj = command.execute();
 		} catch (UnsupportCommandException e) {
 			retobj = new ResponseObject(ResponseObject.Status.EXCEPTION_OCCUR, e.getMessage());
 		}

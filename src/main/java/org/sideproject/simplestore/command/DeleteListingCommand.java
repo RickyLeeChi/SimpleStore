@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +10,9 @@ import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
+import org.sideproject.simplestore.service.CategoryService;
+import org.sideproject.simplestore.service.ListingService;
+import org.sideproject.simplestore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,29 +46,23 @@ public class DeleteListingCommand extends Command{
 	}
 	
 	@Override
-	public void doAction() {
+	public ResponseObject doAction() {
 		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_UNKNOWN_USER));
-//			setReturnMeasge("Error - unknow user");
-			return;
+			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_UNKNOWN_USER);
 		}
 		
 		Optional<Listing> lists = listingService.findById(Integer.parseInt(getCommands().get(2)));
 		
 		if(!lists.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_NOT_EXISTING));
-//			setReturnMeasge("Error - listing does not exist");
-			return;
+			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_NOT_EXISTING);
 		}
 		
 		lists = listingService.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
 		
 		if(!lists.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_OWNER_MISMATCH));
-//			setReturnMeasge("Error - listing owner mismatch");
-			return;
+			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_OWNER_MISMATCH);
 		}
 		
 		Listing l = lists.get();
@@ -81,8 +78,7 @@ public class DeleteListingCommand extends Command{
 			categoryService.save(c);
 		}
 		
-		setRetObj(new ResponseObject(ResponseObject.Status.DELETE_LISTING_SUCCESS));
-//		setReturnMeasge("Success");
+		return new ResponseObject(ResponseObject.Status.DELETE_LISTING_SUCCESS);
 	}
 	
 	@Override

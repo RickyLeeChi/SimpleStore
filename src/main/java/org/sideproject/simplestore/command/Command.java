@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public abstract class Command {
 	public abstract void validateCommand() throws UnsupportCommandException;
 	public abstract void beforeAction();
 	public abstract void afterAction();
-	public abstract void doAction();
+	public abstract ResponseObject doAction();
 	
 	public abstract String getCommandName();
 	public abstract String getCommandUsage();
@@ -24,21 +24,15 @@ public abstract class Command {
 		this.commands = commands;
 	}
 	
-	public ResponseObject getRetObj() {
-		return retObj;
-	}
-	
-	public void setRetObj(ResponseObject retObj) {
-		this.retObj = retObj;
-	}
-	
-	public void execute() throws UnsupportCommandException{
+	public ResponseObject execute() throws UnsupportCommandException{
 		validateCommand();
 		
 		beforeAction();
 		
-		doAction();
+		ResponseObject result = doAction();
 		
 		afterAction();
+		
+		return result;
 	}
 }

@@ -11,8 +11,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer>{
+	/**
+	 * 
+	 * @param category
+	 * @return
+	 */
 	Optional<Category> findByCategory(String category);
 	
+	/**
+	 * 
+	 * @param userName
+	 * @param category
+	 * @param sort
+	 * @return
+	 */
 	@Query(value = "Select list "
 			+ "From Category c "
 			+ "INNER JOIN c.listings list "
@@ -20,6 +32,11 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>{
 			+ "And c.category = :category ")
 	List<Listing> findAllListingByUserNameAndCategoryQuery(@Param("userName") String userName, @Param("category") String category, Sort sort);
 	
+	/**
+	 * 
+	 * @param userName
+	 * @return
+	 */
 	@Query(value = "Select L.id, L.category "
 			+ "From (Select c.id as id, c.category as category, list.userName as name, COUNT(list.userName) AS user_Count "
 			+ "From Listing list "

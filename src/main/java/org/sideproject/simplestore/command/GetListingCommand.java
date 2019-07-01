@@ -1,33 +1,40 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.sideproject.simplestore.entity.Category;
+import org.sideproject.simplestore.entity.Category.CategoryBuilder;
+import org.sideproject.simplestore.entity.Listing;
+import org.sideproject.simplestore.entity.Listing.ListingBuilder;
 import org.sideproject.simplestore.entity.User;
+import org.sideproject.simplestore.entity.User.UserBuilder;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 import org.sideproject.simplestore.repository.CategoryRepository;
+import org.sideproject.simplestore.repository.ListingRepository;
 import org.sideproject.simplestore.repository.UserRepository;
+import org.sideproject.simplestore.service.ListingService;
+import org.sideproject.simplestore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component("GET_TOP_CATEGORY")
-public class GetTopCategoryCommand extends Command{
+@Component("GET_LISTING")
+public class GetListingCommand extends Command{
+	
+	@Autowired
+	private ListingService listingService;
 	
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private CategoryService categoryService;
+	private String commandName = "GET_LISTING";
+	private String commandUsage = "GET_LISTING <username> <listing_id>";
 	
-	private String commandName = "GET_TOP_CATEGORY";
-	private String commandUsage = "GET_TOP_CATEGORY <username>";
-	
-	public GetTopCategoryCommand() {
+	public GetListingCommand() {
 		super();
 	}
-
+	
 	@Override
 	public String getCommandName() {
 		return this.commandName;
@@ -37,27 +44,25 @@ public class GetTopCategoryCommand extends Command{
 	public String getCommandUsage() {
 		return this.commandUsage;
 	}
-	
+
 	@Override
-	public void doAction() {
+	public ResponseObject doAction() {
 		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
 		
 		if(!users.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_UNKNOWN_USER));
-//			setReturnMeasge("Error - unknow user");
-			return;
+			return new ResponseObject(ResponseObject.Status.GET_LISTING_UNKNOWN_USER);
 		}
 		
-		List<Category> category = categoryService.findTopCategoryByUserNameQuery(getCommands().get(1));
-				
-		if(category.isEmpty()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_NO_LIST_EXISTING));
-//			setReturnMeasge("No listing exist");
-			return;
+		Optional<Listing> lists = listingService.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
+		
+		
+		if(!lists.isPresent()) {
+			return new ResponseObject(ResponseObject.Status.GET_LISTING_NOT_FOUND);
 		}
 		
-		setRetObj(new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_SUCCESS, category.get(0).getCategory()));
-//		setReturnMeasge(category.get(0).getCategory());
+		Listing l = lists.get();
+		
+		return new ResponseObject(ResponseObject.Status.GET_LISTING_SUCCESS, l.toString());
 	}
 	
 	@Override

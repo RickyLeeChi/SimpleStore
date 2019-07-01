@@ -8,8 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ListingRepository extends JpaRepository<Listing, Integer>{
 	
-//	@Transactional
-//	void deleteByIdAndUserName(Integer id, String userName);
-	
+	/**
+	 * 
+	 * @param id
+	 * @param userName
+	 * @return
+	 */
 	Optional<Listing> findByIdAndUserName(Integer id, String userName);
 }

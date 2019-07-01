@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +27,6 @@ public class CommandManager {
 	//Cache for Commands
 	private Map<String, Command> commandCache= new HashMap<String, Command>();
 	
-	Command cmd;
-	
 	public void loadAllCommands() {
 		//
 		//Refelection getsubtypeof
@@ -37,10 +35,10 @@ public class CommandManager {
 		if(!commandCache.isEmpty()) {
 			return;
 		}
-		
+
 		GenericApplicationContext ctx = new GenericApplicationContext(applicationContext);
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
-		scanner.scan("org.sideproject.simplestore.service");
+		scanner.scan("org.sideproject.simplestore.command");
 		ctx.refresh();
         
 		String[] beanDefinitionNames = ctx.getBeanDefinitionNames();
@@ -52,37 +50,26 @@ public class CommandManager {
 		//
 	}
 	
-	public void execute(List<String> commands) throws UnsupportCommandException {
-		if(commands.isEmpty()) {
-			throw new UnsupportCommandException("");
-		}
-		
+	public Command getCommand(String userInputCommand) throws UnsupportCommandException {	
 		loadAllCommands();
 		
-		String serviceName = commands.get(0);
-		
-		if(serviceName.isEmpty()) {
+		if(userInputCommand.isEmpty()) {
 			throw new UnsupportCommandException("");
 		}
 		
+		Command cmd = null;
+		
 		try {
-			cmd = commandCache.get(serviceName);
-//			cmd = (Command) applicationContext.getBean(serviceName);
+			cmd = commandCache.get(userInputCommand);
 		} catch (Exception e) {
-			throw new UnsupportCommandException(commands.get(0));
+			throw new UnsupportCommandException(userInputCommand);
 		}
 		
-        if (cmd == null) {
-        	logger.info("Command [{}] does NOT support", commands.get(0));
-        	throw new UnsupportCommandException(commands.get(0));
+		if (cmd == null) {
+        	logger.info("Command [{}] does NOT support", userInputCommand);
+        	throw new UnsupportCommandException(userInputCommand);
         }
-        
-        cmd.setCommands(commands);
-        
-        cmd.execute();
-	}
-	
-	public ResponseObject getResponseObj() {
-		return this.cmd.getRetObj();
+		
+		return cmd;
 	}
 }

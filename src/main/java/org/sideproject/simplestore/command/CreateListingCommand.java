@@ -1,4 +1,4 @@
-package org.sideproject.simplestore.service;
+package org.sideproject.simplestore.command;
 
 import java.util.Date;
 import java.util.List;
@@ -11,12 +11,11 @@ import org.sideproject.simplestore.entity.Listing.ListingBuilder;
 import org.sideproject.simplestore.entity.User;
 import org.sideproject.simplestore.entity.User.UserBuilder;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
-import org.sideproject.simplestore.repository.CategoryRepository;
-import org.sideproject.simplestore.repository.ListingRepository;
-import org.sideproject.simplestore.repository.UserRepository;
+import org.sideproject.simplestore.service.CategoryService;
+import org.sideproject.simplestore.service.ListingService;
+import org.sideproject.simplestore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component("CREATE_LISTING")
 public class CreateListingCommand extends Command{
@@ -48,15 +47,13 @@ public class CreateListingCommand extends Command{
 	}
 
 	@Override
-	public void doAction() {
+	public ResponseObject doAction() {
 		User user = getUserByArgs();
 		
 		Optional<User> users = userService.findByUserNameIgnoreCase(user.getUserName());
 		
 		if(!users.isPresent()) {
-			setRetObj(new ResponseObject(ResponseObject.Status.CREATE_LIST_UNKNOWN_USER));
-//			setReturnMeasge("Error - unknown user");
-			return;
+			return new ResponseObject(ResponseObject.Status.CREATE_LIST_UNKNOWN_USER);
 		}
 		
 		user = users.get();
@@ -76,8 +73,7 @@ public class CreateListingCommand extends Command{
 		
 		Listing returnList = listingService.save(list);
 		
-		setRetObj(new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(returnList.getId())));
-//		setReturnMeasge(String.valueOf(returnList.getId()));
+		return new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(returnList.getId()));
 	}
 	
 	@Override

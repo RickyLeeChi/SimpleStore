@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.sideproject.simplestore.entity.Category;
 import org.sideproject.simplestore.entity.Listing;
+import org.sideproject.simplestore.entity.Category.CategoryBuilder;
 import org.sideproject.simplestore.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -37,5 +38,20 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
 	public void delete(Category category) {
 		categoryRepository.delete(category);
+	}
+
+	@Override
+	public Category getCategoryByName(String categoryName) {
+		Optional<Category> category = this.findByCategory(categoryName);
+		return category.isPresent()?category.get():null;
+	}
+
+	@Override
+	public Category createCategory(String categoryName) {
+		Category category = new CategoryBuilder()
+				.setCategory(categoryName)
+				.build();
+		
+		return this.save(category);
 	}
 }

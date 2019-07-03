@@ -12,11 +12,20 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Override
 	public User save(User user) {
 		return userRepository.save(user);
 	}
 	
+	@Override
 	public Optional<User> findByUserNameIgnoreCase(String userName){
 		return userRepository.findByUserNameIgnoreCase(userName);
+	}
+
+	@Override
+	public User getUserByName(String userName) {
+		Optional<User> user = userRepository.findByUserNameIgnoreCase(userName);
+		
+		return user.isPresent()?user.get():null;
 	}
 }

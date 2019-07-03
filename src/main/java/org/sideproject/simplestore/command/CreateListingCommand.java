@@ -48,32 +48,25 @@ public class CreateListingCommand extends Command{
 
 	@Override
 	public ResponseObject doAction() {
-		User user = getUserByArgs();
+		User user = userService.getUserByName(getCommands().get(1));
 		
-		Optional<User> users = userService.findByUserNameIgnoreCase(user.getUserName());
-		
-		if(!users.isPresent()) {
+		if(user == null) {
 			return new ResponseObject(ResponseObject.Status.CREATE_LIST_UNKNOWN_USER);
 		}
 		
-		user = users.get();
-	
-		Category category = getCategoryByArgs();
+		Category category = categoryService.getCategoryByName(getCommands().get(5));
 		
-		Optional<Category> categoryInDB=  categoryService.findByCategory(category.getCategory());
-		
-		if(categoryInDB.isPresent()) {
-			category = categoryInDB.get();
-		}
-		else {
-			categoryService.save(category);
+		if(category == null) {
+			category = categoryService.createCategory(getCommands().get(5));
 		}
 		
-		Listing list = getListingByArgs(user, category);
+		Listing list = listingService.createLisitng(getCommands().get(2),
+										getCommands().get(3),
+										Double.parseDouble(getCommands().get(4)),
+										category,
+										user);
 		
-		Listing returnList = listingService.save(list);
-		
-		return new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(returnList.getId()));
+		return new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(list.getId()));
 	}
 	
 	@Override

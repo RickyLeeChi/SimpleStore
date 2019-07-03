@@ -7,4 +7,5 @@ import org.sideproject.simplestore.entity.User;
 public interface UserService {
 	public User save(User user);
 	public Optional<User> findByUserNameIgnoreCase(String userName);
+	public User getUserByName(String userName);
 }

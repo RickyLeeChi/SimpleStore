@@ -29,7 +29,6 @@ public class Application
 	@Autowired
 	CommandManager commandManager;
 	
-	@Autowired
 	public static AnnotationConfigApplicationContext applicationContext;
 	
     public static void main( String[] args ) throws UnsupportCommandException, CommandParseFailException {

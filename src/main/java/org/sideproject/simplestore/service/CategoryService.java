@@ -14,4 +14,6 @@ public interface CategoryService {
 	public List<Listing> findAllListingByUserNameAndCategoryQuery(String userName, String category, Sort sort);
 	public List<Category> findTopCategoryByUserNameQuery(String userName);
 	public void delete(Category category);
+	public Category getCategoryByName(String categoryName);
+	public Category createCategory(String categoryName);
 }

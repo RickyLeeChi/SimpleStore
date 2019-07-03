@@ -47,36 +47,31 @@ public class DeleteListingCommand extends Command{
 	
 	@Override
 	public ResponseObject doAction() {
-		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
+//		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
+//		
+//		if(!users.isPresent()) {
+//			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_UNKNOWN_USER);
+//		}
 		
-		if(!users.isPresent()) {
+		User user = userService.getUserByName(getCommands().get(1));
+		
+		if(user == null) {
 			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_UNKNOWN_USER);
 		}
 		
-		Optional<Listing> lists = listingService.findById(Integer.parseInt(getCommands().get(2)));
+		Listing list = listingService.getListingById(Integer.parseInt(getCommands().get(2)));
 		
-		if(!lists.isPresent()) {
+		if(list == null) {
 			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_NOT_EXISTING);
 		}
 		
-		lists = listingService.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
+		list = listingService.getListingByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
 		
-		if(!lists.isPresent()) {
+		if(list == null) {
 			return new ResponseObject(ResponseObject.Status.DELETE_LISTING_OWNER_MISMATCH);
 		}
 		
-		Listing l = lists.get();
-		
-		Category c = l.getCategory();
-		
-		c.getListings().remove(l);
-		
-		if(c.getListings().isEmpty()) {
-			categoryService.delete(c);
-		}		
-		else {
-			categoryService.save(c);
-		}
+		listingService.deleteListing(list);
 		
 		return new ResponseObject(ResponseObject.Status.DELETE_LISTING_SUCCESS);
 	}

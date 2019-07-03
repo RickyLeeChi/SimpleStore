@@ -73,7 +73,7 @@ public class SimpleStoreTest {
 	String glistCommand = "GET_LISTING ricky1 3";
 	
 	//Delete list
-	String dlistCommand = "DELETE_LISTING ricky1 3";
+	String dlistCommand = "DELETE_LISTING ricky1 10";
 	
 	//Get category 
 	String gCategoryCommand = "GET_CATEGORY ricky1 Electronics sort_price asc";
@@ -217,6 +217,20 @@ public class SimpleStoreTest {
 		getTopCategoryCommand.setCommands(arg);
 		
 		ResponseObject ret = getTopCategoryCommand.execute();	
+		
+		System.out.println(ret.getMessage());
+	}
+	
+	@Test
+	@Order(11)
+	public void testDeleteListing() throws CommandParseFailException, UnsupportCommandException {
+		List<String> arg = new ArrayList<String>();
+		
+		arg = CommandPaser.parse(dlistCommand);
+		
+		deleteListingCommand.setCommands(arg);
+		
+		ResponseObject ret = deleteListingCommand.execute();	
 		
 		System.out.println(ret.getMessage());
 	}

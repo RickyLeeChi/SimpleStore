@@ -42,9 +42,9 @@ public class GetTopCategoryCommand extends Command{
 	
 	@Override
 	public ResponseObject doAction() {
-		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
+		User user = userService.getUserByName(getCommands().get(1));
 		
-		if(!users.isPresent()) {
+		if(user == null) {
 			return new ResponseObject(ResponseObject.Status.GET_TOP_CATEGORY_UNKNOWN_USER);
 		}
 		

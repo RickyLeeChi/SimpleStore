@@ -47,22 +47,19 @@ public class GetListingCommand extends Command{
 
 	@Override
 	public ResponseObject doAction() {
-		Optional<User> users = userService.findByUserNameIgnoreCase(getCommands().get(1));
+		User user = userService.getUserByName(getCommands().get(1));
 		
-		if(!users.isPresent()) {
+		if(user == null) {
 			return new ResponseObject(ResponseObject.Status.GET_LISTING_UNKNOWN_USER);
 		}
 		
-		Optional<Listing> lists = listingService.findByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));
+		Listing list = listingService.getListingByIdAndUserName(Integer.parseInt(getCommands().get(2)), getCommands().get(1));	
 		
-		
-		if(!lists.isPresent()) {
+		if(list == null) {
 			return new ResponseObject(ResponseObject.Status.GET_LISTING_NOT_FOUND);
 		}
 		
-		Listing l = lists.get();
-		
-		return new ResponseObject(ResponseObject.Status.GET_LISTING_SUCCESS, l.toString());
+		return new ResponseObject(ResponseObject.Status.GET_LISTING_SUCCESS, list.toString());
 	}
 	
 	@Override

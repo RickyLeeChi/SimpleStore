@@ -33,7 +33,7 @@ public class ListingServiceImpl implements ListingService{
 	}
 
 	@Override
-	public Listing createLisitng(String title, String description, double price, Category category, User user) {
+	public Listing createListing(String title, String description, double price, Category category, User user) {
 		Listing list = new ListingBuilder()
 				   .setUserName(user.getUserName())
 				   .setTitle(title)

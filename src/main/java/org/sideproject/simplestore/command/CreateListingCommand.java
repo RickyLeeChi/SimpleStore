@@ -60,7 +60,7 @@ public class CreateListingCommand extends Command{
 			category = categoryService.createCategory(getCommands().get(5));
 		}
 		
-		Listing list = listingService.createLisitng(getCommands().get(2),
+		Listing list = listingService.createListing(getCommands().get(2),
 										getCommands().get(3),
 										Double.parseDouble(getCommands().get(4)),
 										category,

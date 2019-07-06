@@ -38,13 +38,14 @@ public class RegisterUserCommand extends Command{
 	public ResponseObject doAction() {		
 		User user = getUserByCommands();
 			
-		Optional<User> users = userService.findByUserNameIgnoreCase(user.getUserName());
+		User useInDB = userService.getUserByName(user.getUserName());
 		
-		if(users.isPresent()) {
+		if(useInDB != null) {
 			return new ResponseObject(ResponseObject.Status.REGISTER_USER_ALREADY_EXISTING);
 		}
 		
 		userService.save(user);
+		
 		return new ResponseObject(ResponseObject.Status.REGISTER_USER_SUCCESS);	
 	}
 	

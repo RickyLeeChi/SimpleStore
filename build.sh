@@ -6,8 +6,8 @@ sudo ln -s /usr/local/apache-maven-3.6.1 /usr/local/maven
 export M2_HOME=/usr/local/maven
 export PATH=${M2_HOME}/bin:${PATH}
 
-mvn dependency:tree
-#mvn dependency:copy-dependencies
+#mvn dependency:tree
+mvn dependency:copy-dependencies
 mvn package -Dmaven.test.skip=true
 
 #mvn compile -Dmaven.test.skip=true

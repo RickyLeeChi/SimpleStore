@@ -6,7 +6,6 @@ import org.sideproject.simplestore.exception.UnsupportCommandException;
 
 public abstract class Command {
 	private List<String> commands;
-	private ResponseObject retObj = new ResponseObject(ResponseObject.Status.UNKNOWN);
 	
 	public abstract void validateCommand() throws UnsupportCommandException;
 	public abstract void beforeAction();

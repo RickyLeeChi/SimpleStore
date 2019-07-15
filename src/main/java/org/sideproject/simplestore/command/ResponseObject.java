@@ -55,9 +55,9 @@ public class ResponseObject {
 		}
 	}
 
-	public ResponseObject(Status status) {
-		this.status = status;
-	}
+//	public ResponseObject(Status status) {	
+//		this.status = status;
+//	}
 	
 	public ResponseObject(Status status, String... args) {
 		this.status = status;

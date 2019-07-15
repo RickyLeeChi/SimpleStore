@@ -5,22 +5,22 @@ import java.util.List;
 import org.sideproject.simplestore.exception.UnsupportCommandException;
 
 public abstract class Command {
-	private List<String> commands;
+	private List<String> userInputs;
 	
-	public abstract void validateCommand() throws UnsupportCommandException;
-	public abstract void beforeAction();
-	public abstract void afterAction();
-	public abstract ResponseObject doAction();
+	protected abstract void validateCommand() throws UnsupportCommandException;
+	protected abstract void beforeAction();
+	protected abstract void afterAction();
+	protected abstract ResponseObject doAction();
 	
 	public abstract String getCommandName();
 	public abstract String getCommandUsage();
 	
 	public List<String> getCommands() {
-		return this.commands;
+		return this.userInputs;
 	}
 
-	public void setCommands(List<String> commands) {
-		this.commands = commands;
+	public void setCommands(List<String> userInputs) {
+		this.userInputs = userInputs;
 	}
 	
 	public ResponseObject execute() throws UnsupportCommandException{

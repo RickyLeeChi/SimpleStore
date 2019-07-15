@@ -69,6 +69,7 @@ public class CreateListingCommand extends Command{
 		return new ResponseObject(ResponseObject.Status.CREATE_LIST_SUCCESS, String.valueOf(list.getId()));
 	}
 	
+	//TODO : Command validation 
 	@Override
 	public void validateCommand() throws UnsupportCommandException {
 		List<String> commands = getCommands();
@@ -84,44 +85,6 @@ public class CreateListingCommand extends Command{
 		}
 	}
 	
-	private User getUserByArgs() {
-		List<String> args = getCommands();
-
-		String userName = args.get(1);
-		
-		User user = new UserBuilder()
-				.setUserName(userName)
-				.build();
-				
-		return user;
-	}
-	
-	private Category getCategoryByArgs() {
-		List<String> args = getCommands();
-		
-		Category category = new CategoryBuilder()
-							.setCategory(args.get(5))
-							.build();
-				
-		return category;
-	}
-	
-	private Listing getListingByArgs(User user, Category category) {
-		List<String> args = getCommands();
-		
-		Listing list = new ListingBuilder()
-				   .setUserName(args.get(1))
-				   .setTitle(args.get(2))
-				   .setDescription(args.get(3))
-				   .setPrice(Double.parseDouble(args.get(4)))
-				   .setCategory(category)
-				   .setUser(user)
-				   .setCreationTime(new Date())
-				   .build();
-				
-		return list;
-	}
-
 	@Override
 	public void beforeAction() {
 		// TODO Auto-generated method stub
